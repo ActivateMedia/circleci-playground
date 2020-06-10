@@ -1,0 +1,32 @@
+{
+  "name": "circleci-playground",
+  "private": true,
+  "version": "1.0.0",
+  "description": "circleci-playground project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ActivateMedia/circleci-playground.git"
+  },
+  "author": "Activate",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ActivateMedia/circleci-playground/issues"
+  },
+  "homepage": "https://github.com/ActivateMedia/circleci-playground#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "husky": "^4.2.1",
+    "lerna": "^3.20.2"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "dependencies": {}
+}
