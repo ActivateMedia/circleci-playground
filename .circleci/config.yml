@@ -33,7 +33,7 @@ jobs:
           code-param-name-map: '
             [
               {"regex": "^(packages\/api).*", "param_name": "run_api_workflow"},
-              {"regex": "^(packages\/webapp).*", "param_name": "run_webapp_workflow"},
+              {"regex": "^(packages\/webapp).*", "param_name": "run_webapp_workflow"}
             ]'
           additional-param-map: '{"run_trigger_workflow": false}'
           use-swissknife-sha: true
