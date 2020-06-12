@@ -1,0 +1,68 @@
+version: 2.1
+
+orbs:
+  swissknife: roopakv/swissknife@0.38.0
+
+jobs:
+  run-tests:
+    docker:
+      - image: circleci/node:12
+    working_directory: /home/circleci/project/
+    parameters:
+      dir:
+        type: string
+        description: The directory to run tests for.
+    steps:
+      - swissknife/sk-checkout:
+          swissknife_sha: << pipeline.parameters.swissknife_sha >>
+      - run:
+          name: Run tests
+          command: |
+            echo "Running inside << parameters.dir >>"
+
+  trigger-needed-workflows:
+    docker:
+      - image: circleci/node:12
+    working_directory: /home/circleci/project/
+    steps:
+      - checkout
+      - swissknife/trigger-workflows-for-all-modified:
+          base-branch: master
+          run-mode-for-base-branch: run_for_last_commit
+          use-divergence-point: true
+          code-param-name-map: '
+            [
+              {"regex": "^(packages/api).*", "param_name": "run_api_workflow"},
+              {"regex": "^(packages/webapp).*", "param_name": "run_webapp_workflow"},
+            ]'
+          additional-param-map: '{"run_trigger_workflow": false}'
+          use-swissknife-sha: true
+
+workflows:
+  api-tests:
+    when: << pipeline.parameters.run_api_workflow >>
+    jobs:
+      - run-tests:
+          dir: packages/api
+          name: 'API tests'
+
+  webapp-tests:
+    when: << pipeline.parameters.run_webapp_workflow >>
+    jobs:
+      - run-tests:
+          dir: packages/webapp
+          name: 'Webapp tests'
+
+parameters:
+  run_api_workflow:
+    default: false
+    type: boolean
+  run_webapp_workflow:
+    default: false
+    type: boolean
+  run_trigger_workflow:
+    default: true
+    type: boolean
+  swissknife_sha:
+    default: ""
+    type: string
