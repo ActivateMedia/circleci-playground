@@ -53,6 +53,11 @@ workflows:
           dir: packages/webapp
           name: 'Webapp tests'
 
+  trigger-needed-workflows:
+    when: << pipeline.parameters.run_trigger_workflow >>
+    jobs:
+      - trigger-needed-workflows
+
 parameters:
   run_api_workflow:
     default: false
